@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         KfW Postkorb - Download & Archiv mit eigenem Dateinamen (Popup, Shift-Auswahl)
 // @namespace    http://tampermonkey.net/
-// @version      1.3.5
-// @description  Ermöglicht das Herunterladen bzw. Archivieren von Postkorb-Dokumenten. Der Dateiname wird anhand eines benutzerdefinierten Formats erstellt. Der Benutzer kann das Format per Popup einstellen und eine Vorschau sehen. Zusätzlich gibt es Optionen für "Alle", "Ausgewählte" und "Ungesehene" Downloads sowie "Alle", "Ausgewählte" und "Gesehene" Archivierungen. Mit Shift lässt sich eine Mehrfachauswahl treffen. Auf bestimmten Seiten werden die Archivfunktionen ausgeblendet.
+// @version      1.3.6
+// @description  Ermöglicht das Herunterladen bzw. Archivieren von Postkorb-Dokumenten. Der Dateiname wird anhand eines benutzerdefinierten Formats erstellt. Der Benutzer kann das Format per Popup einstellen und eine Vorschau sehen. Zusätzlich gibt es Optionen für "Alle", "Ausgewählte" und "Ungesehene" Downloads sowie "Alle", "Ausgewählte" und "Gesehene" Archivierungen. Mit Shift lässt sich eine Mehrfachauswahl treffen. Archivfunktionen werden auf bestimmten Seiten ausgeblendet.
 // @author       ynomel
 // @match        https://onlinekreditportal.kfw.de/BK_KNPlattform/KfwFormularServer/BK_KNPlattform/Postkorb*
 // @grant        GM_xmlhttpRequest
@@ -40,9 +40,9 @@
         name = name.replace(/{internetreferenz}/g, data.internetreferenz);
         name = name.replace(/{kfwid}/g, data.kfwid);
 
-        // Ersetze Spacer-Definitionen
+        // Ersetze Spacer-Definitionen: {spacer-"TEXT"} wird durch TEXT ersetzt.
         name = name.replace(/{spacer-"([^"]+)"}/g, "$1");
-        // Entferne überflüssige Spacer, falls ein Wert leer ist
+        // Entferne überflüssige Spacer
         name = name.replace(/(?:\s*-\s*)(?:ohne)?\s*-\s*/gi, " - ");
         name = name.replace(/^\s*-\s*/,"").replace(/\s*-\s*$/,"");
         return sanitizeFilename(name.trim());
@@ -50,7 +50,7 @@
 
     /********* Zeilenanzahl setzen anhand von class="current" *********/
     function setMaxRows() {
-        // Suche das Element mit class "current", in dem z. B. "Anzahl Zeilen: 50 von 103" steht.
+        // Suche das Element mit class "current", z.B. "Anzahl Zeilen: 50 von 103"
         let currentDiv = document.querySelector("div.current");
         if (currentDiv) {
             let text = currentDiv.textContent;
@@ -58,7 +58,7 @@
             if (match) {
                 let currentNum = parseInt(match[1], 10);
                 let totalNum = parseInt(match[2], 10);
-                // Wenn nicht alle Einträge geladen sind und mindestens 50 angezeigt werden, OK klicken.
+                // Klick nur, wenn nicht alle Einträge geladen sind und mindestens 50 angezeigt werden
                 if (currentNum < totalNum && currentNum >= 50) {
                     let select = document.querySelector("select[name='NUMBER_OF_ROWS']");
                     if (select && select.value !== "100000") {
@@ -351,9 +351,11 @@
     function createControlPanel() {
         let panel = document.createElement("div");
         panel.id = "kfwpanel";
+        // Panel fest positionieren (rechts oben, 195px von oben, 10px vom rechten Rand) mit fester Breite 145px
         panel.style.position = "fixed";
         panel.style.top = "195px";
         panel.style.right = "10px";
+        panel.style.width = "145px";
         panel.style.zIndex = "10000";
         panel.style.backgroundColor = "#f8f9fa";
         panel.style.border = "1px solid #ced4da";
@@ -366,8 +368,9 @@
         function createButton(text, onClick, color) {
             let btn = document.createElement("button");
             btn.textContent = text;
-            btn.style.margin = "5px";
+            btn.style.margin = "5px 0"; // Obere und untere Margin, da Buttons 100% breit sein sollen
             btn.style.padding = "5px 10px";
+            btn.style.width = "100%"; // Buttons über die ganze Breite
             btn.style.border = "none";
             btn.style.borderRadius = "3px";
             btn.style.backgroundColor = color;
@@ -379,7 +382,8 @@
             return btn;
         }
 
-        panel.appendChild(createButton("Dateinamens‑Einstellungen", openSettingsPopup, "#6f42c1"));
+        // Ändere "Dateinamens‑Einstellungen" zu "⚙️Dateinamen"
+        panel.appendChild(createButton("⚙️Dateinamen", openSettingsPopup, "#6f42c1"));
 
         let dlHeader = document.createElement("div");
         dlHeader.textContent = "Download Optionen:";
