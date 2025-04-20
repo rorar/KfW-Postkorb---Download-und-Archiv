@@ -38,7 +38,7 @@ Dieses Tampermonkey‑Userscript ermöglicht es, Dokumente im KfW Postkorb autom
    Stelle sicher, dass Du [Tampermonkey](https://www.tampermonkey.net/) in Deinem Browser installiert hast.
 
 2. **Script hinzufügen:**  
-   Klicke auf das Userscript [kfw-postkorb-download-und-archiv.js]([url](https://github.com/rorar/KfW-Postkorb---Download-und-Archiv/blob/main/kfw-postkorb-download-und-archiv.js)) und klicke auf den Button "RAW" um es zu installieren.
+   Klicke auf das Userscript [kfw-postkorb-download-und-archiv.js](https://github.com/rorar/KfW-Postkorb---Download-und-Archiv/blob/main/kfw-postkorb-download-und-archiv.js) und klicke auf den Button "RAW" um es zu installieren.
    Erstelle in Tampermonkey ein neues Script und kopiere den gesamten Code aus diesem Repository hinein. Speichere das Script.
 
 4. **Anwendung:**  
