@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      1.3.6
 // @description  Ermöglicht das Herunterladen bzw. Archivieren von Postkorb-Dokumenten. Der Dateiname wird anhand eines benutzerdefinierten Formats erstellt. Der Benutzer kann das Format per Popup einstellen und eine Vorschau sehen. Zusätzlich gibt es Optionen für "Alle", "Ausgewählte" und "Ungesehene" Downloads sowie "Alle", "Ausgewählte" und "Gesehene" Archivierungen. Mit Shift lässt sich eine Mehrfachauswahl treffen. Archivfunktionen werden auf bestimmten Seiten ausgeblendet.
-// @author       ynomel
+// @author       rorar
 // @match        https://onlinekreditportal.kfw.de/BK_KNPlattform/KfwFormularServer/BK_KNPlattform/Postkorb*
 // @grant        GM_xmlhttpRequest
 // @grant        GM_download
