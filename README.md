@@ -69,7 +69,7 @@ Dieses Projekt steht unter der MIT-Lizenz. Details findest Du in der [LICENSE](L
 
 ## Credits
 
-- Entwickelt von *ynomel*  
+- Entwickelt von *rorar*  
 - Inspiration und Ideen basieren auf Anforderungen zur Automatisierung im KfW Postkorb. Weil Banken und UX/UI - hussaaaa!
 
 ---
