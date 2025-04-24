@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         KfW Postkorb - Download & Archiv mit eigenem Dateinamen (Popup, Shift-Auswahl)
 // @namespace    http://tampermonkey.net/
-// @version      1.3.6
+// @version      1.3.7
 // @description  Ermöglicht das Herunterladen bzw. Archivieren von Postkorb-Dokumenten. Der Dateiname wird anhand eines benutzerdefinierten Formats erstellt. Der Benutzer kann das Format per Popup einstellen und eine Vorschau sehen. Zusätzlich gibt es Optionen für "Alle", "Ausgewählte" und "Ungesehene" Downloads sowie "Alle", "Ausgewählte" und "Gesehene" Archivierungen. Mit Shift lässt sich eine Mehrfachauswahl treffen. Archivfunktionen werden auf bestimmten Seiten ausgeblendet.
 // @author       rorar
 // @match        https://onlinekreditportal.kfw.de/BK_KNPlattform/KfwFormularServer/BK_KNPlattform/Postkorb*
@@ -50,7 +50,7 @@
 
     /********* Zeilenanzahl setzen anhand von class="current" *********/
     function setMaxRows() {
-        // Suche das Element mit class "current", z.B. "Anzahl Zeilen: 50 von 103"
+        // Suche das Element mit class "current", z.B. "Anzahl Zeilen: 50 von 103"
         let currentDiv = document.querySelector("div.current");
         if (currentDiv) {
             let text = currentDiv.textContent;
@@ -75,7 +75,7 @@
         }
     }
 
-    /********* Popup für Dateinamens‑Einstellungen *********/
+    /********* Popup für Dateinamens-Einstellungen *********/
     function openSettingsPopup() {
         let overlay = document.createElement('div');
         overlay.id = "settingsOverlay";
@@ -102,7 +102,7 @@
         modal.style.fontSize = "14px";
 
         let title = document.createElement('h3');
-        title.textContent = "Dateinamens‑Einstellungen";
+        title.textContent = "Dateinamens-Einstellungen";
         modal.appendChild(title);
 
         let label = document.createElement('label');
@@ -321,7 +321,13 @@
         return rows.filter(filterFn);
     }
 
-    /********* Button‑Eventhandler *********/
+    /********* Ungelesen-Erkennung *********/
+    function isRowUnseen(row) {
+        // Ungelesen: mindestens ein <b>-Element vorhanden und nicht manuell als 'seen' markiert
+        return row.querySelector("b") !== null && !row.classList.contains("seen");
+    }
+
+    /********* Button-Eventhandler *********/
     function downloadAll() {
         let rows = getRows(() => true);
         rows.forEach(row => downloadDocument(row));
@@ -331,7 +337,7 @@
         rows.forEach(row => downloadDocument(row));
     }
     function downloadUnseen() {
-        let rows = getRows(row => !row.classList.contains("seen"));
+        let rows = getRows(isRowUnseen);
         rows.forEach(row => downloadDocument(row));
     }
     function archiveAll() {
@@ -382,7 +388,7 @@
             return btn;
         }
 
-        // Ändere "Dateinamens‑Einstellungen" zu "⚙️Dateinamen"
+        // Ändere "Dateinamens-Einstellungen" zu "⚙️Dateinamen"
         panel.appendChild(createButton("⚙️Dateinamen", openSettingsPopup, "#6f42c1"));
 
         let dlHeader = document.createElement("div");
